@@ -56,7 +56,7 @@ change-log:
 """
 
 import sys
-from tools.session import Session
+from tools.session.session import Session
 
 
 class DeviceProperties:  # pylint: disable=too-many-instance-attributes
