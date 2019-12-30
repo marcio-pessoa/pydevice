@@ -7,55 +7,9 @@ people:
   developers:
   - name: Marcio Pessoa
     email: marcio.pessoa@gmail.com
-change-log:
-  2019-09-07
-  - version: 0.13
-    fixed: Adequation to pylint.
-  2019-02-12
-  - version: 0.12
-    fixed: Auto detection was returning always the last device.
-  2019-01-25
-  - version: 0.11b
-    fixed: Auto detection was returning invalid device name.
-  2018-04-02
-  - version: 0.10b
-    changed: Only configured interfaces are shown.
-  2018-02-11
-  - version: 0.09b
-    added: is_enable method.
-  2017-06-06
-  - version: 0.08b
-    added: Terminal line feed and carriage return customization.
-    added: Terminal local echo customization.
-  2017-06-06
-  - version: 0.07b
-    changed: Removed Warning messages.
-  2017-05-11
-  - version: 0.06b
-    added: Added startup() method.
-  2017-05-08
-  - version: 0.05b
-    added: Added presentation() method.
-  2017-04-01
-  - version: 0.04b
-    changed: Added version information.
-  2017-02-22
-  - version: 0.03b
-    changed: Removed method DeviceProperties.items_extended().
-    added: Method DeviceProperties.is_network_connected().
-  2017-02-21
-  - version: 0.02b
-    added: Information messages.
-    added: Verbose error messages.
-  2017-02-20
-  - version: 0.01b
-    added: Changed except ',' to 'as' to addopt Python 3 style.
-  2016-05-12
-  - version: 0.00b
-    added: first version.
+change-log: Check README.md file.
 """
 
-import sys
 from tools.session.session import Session
 
 
@@ -111,14 +65,13 @@ class DeviceProperties:  # pylint: disable=too-many-instance-attributes
             element: An element name (like x1, x2, x6, etc.).
         """
         if not device_id:
-            return
+            return True
         self.__id = device_id
         # Is device present in configuration file?
-        # try:
-            # echo.check_id = self.data["device"][self.__id]
-        # except KeyError:
-            # echo.erroln('Device is not present in configuration file.')
-            # sys.exit(True)
+        try:
+            self.data["device"][self.__id]
+        except KeyError:
+            return None
         # Check mandatory keys.
         try:
             self.system_plat = self.data["device"][self.__id]["system"]["plat"]
@@ -130,7 +83,8 @@ class DeviceProperties:  # pylint: disable=too-many-instance-attributes
             self.system_logs = self.data["device"][self.__id]["system"]['logs']
         except KeyError: # as err:
             # echo.erroln('Mandatory key is absent: %s' % (err))
-            sys.exit(True)
+            return True
+        return False
 
     def list(self):
         """Fetches device IDs from a dictionary.
@@ -238,7 +192,7 @@ class DeviceProperties:  # pylint: disable=too-many-instance-attributes
         if not self.__id:
             return None
         return \
-            '    ID: ' + str(self.__id) + '\n' + \
+            'ID: ' + str(self.__id) + '\n' + \
             '    Name: ' + str(self.system_plat) + \
             ' ' + 'Mark ' + str(self.system_mark) + '\n' + \
             '    Description: ' + str(self.system_desc)
