@@ -192,7 +192,7 @@ class DeviceProperties:  # pylint: disable=too-many-instance-attributes
         if not self.__id:
             return None
         return \
-            'ID: ' + str(self.__id) + '\n' + \
+            '    ID: ' + str(self.__id) + '\n' + \
             '    Name: ' + str(self.system_plat) + \
             ' ' + 'Mark ' + str(self.system_mark) + '\n' + \
             '    Description: ' + str(self.system_desc)
